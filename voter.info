@@ -1,0 +1,17 @@
+name = Voting Systems
+description = "Provides a series of voting systems"
+core = 7.x
+
+files[] = classes/votes/AbstractBallot.php
+files[] = classes/votes/DistrictBallotSet.php
+files[] = classes/votes/RankedBallot.php
+files[] = classes/votes/RatedBallot.php
+files[] = classes/contests/AbstractVotingContest.php
+files[] = classes/contests/SingleWinnerContest.php
+files[] = classes/methods/SingleWinnerMethod.php
+files[] = classes/methods/PluralityMethod.php
+files[] = classes/methods/RunoffMethod.php
+files[] = classes/methods/BordaMethod.php
+files[] = classes/methods/BordaRunoff.php
+files[] = classes/methods/CondorcetMethod.php
+files[] = classes/methods/BucklinMethod.php

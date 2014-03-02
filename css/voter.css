@@ -1,0 +1,13 @@
+div.voter-seats-graphic {
+    width: 100%;
+    height: 30px;
+}
+span.voter-party-seats {
+    display: inline-block;
+    float: left;
+    height: 30px;
+}
+.voter-seats-breakdown li strong {
+    width: 150px;
+    display: inline-block;
+}

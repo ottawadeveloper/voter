@@ -1,0 +1,111 @@
+<?php
+
+function voter_menu() {
+    return array(
+        'system/election-simulation' => array(
+            'title' => 'Election Simulation',
+            'description' => 'Simulates an election',
+            'page callback' => 'drupal_get_form',
+            'page arguments' => array('voter_form'),
+            'access arguments' => array(TRUE),
+            'type' => MENU_NORMAL_ITEM,
+            'file' => 'voter.pages.inc',
+        ),
+    );
+}
+
+function voter_get_contests($contest = NULL) {
+    $contests = drupal_static(__FUNCTION__, array());
+    if (empty($contests)) {
+        $cached = cache_get(__FUNCTION__);
+        if (!empty($cached)) {
+            $contests = $cached->data;
+        }
+        if (empty($contests)) {
+            module_load_include('inc', 'voter');
+            $contests = _voter_find_contests();
+        }
+    }
+    if (!empty($contest)) {
+        if (isset($contests[$contest])) {
+            return $contests[$contest];
+        }
+        return NULL;
+    }
+    return $contests;
+}
+
+function voter_get_methods($type = NULL) {
+    $methods = drupal_static(__FUNCTION__, array());
+    if (empty($methods)) {
+        $cached = cache_get(__FUNCTION__);
+        if (!empty($cached)) {
+            $methods = $cached->data;
+        }
+        if (empty($methods)) {
+            module_load_include('inc', 'voter');
+            $methods = _voter_find_methods();
+        }
+    }
+    if (!empty($type)) {
+        if (isset($methods[$type])) {
+            return $methods[$type];
+        }
+        return NULL;
+    }    
+    return $methods;
+    
+}
+
+function voter_ajax_full_form($form, &$form_state) {
+    return $form;
+}
+
+function voter_voting_contests() {
+    return array(
+        'single-winner' => array(
+            'title' => 'Single-Winner Districts',
+            'contest' => new SingleWinnerContest(),
+        ),
+    );
+}
+
+function voter_voting_methods() {
+    return array(
+        'single-winner' => array(
+            'plurality' => array(
+                'title' => 'Plurality',
+                'ranked' => TRUE,
+                'method' => new PluralityMethod(),
+            ),
+            'runoff' => array(
+                'title' => 'Instant Runoff',
+                'ranked' => TRUE,
+                'method' => new RunoffMethod(),
+            ),
+            'borda' => array(
+                'title' => 'Borda Count',
+                'ranked' => TRUE,
+                'method' => new BordaMethod(),
+            ),
+            'borda-runoff' => array(
+                'title' => 'Borda Runoff',
+                'ranked' => TRUE,
+                'method' => new BordaRunoff(),
+            ),
+            'condorcet' => array(
+                'title' => 'Condorcet',
+                'ranked' => FALSE,
+                'method' => new CondorcetMethod(),
+            ),
+            'bucklin' => array(
+                'title' => 'Bucklin',
+                'ranked' => TRUE,
+                'method' => new BucklinMethod(),
+            ),
+        ),
+        'proportional' => array(
+            
+        ),
+    );
+}
